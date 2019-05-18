@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+using System;
 using System.IO;
 using CassieCoreLib;
 using Xunit;
@@ -7,6 +7,53 @@ namespace CassieCoreLibTests
 {
     public class CassieCoreLibTests
     {
+        [Fact]
+        public void verify_correct_number_tasks_derived_from_files()
+        {
+            var testHelper = new TestHelpers();
+            var migrationPath = testHelper.SetupMigrationsForTests(true, Guid.NewGuid());
+            var result = new FileSelection(migrationPath).GetFiles();
+            Assert.Equal(9, result.Count);
+            testHelper.TearDownMigrationsTested(migrationPath);
+        }
+
+        [Fact]
+        public void verify_migration_files_do_not_exist()
+        {
+            var testHelper = new TestHelpers();
+            var migrationPath = testHelper.SetupMigrationsForTests(false, Guid.NewGuid());
+            Assert.NotEmpty(migrationPath);
+            testHelper.TearDownMigrationsTested(migrationPath);
+        }
+
+        [Fact]
+        public void verify_migration_files_exist()
+        {
+            var testHelper = new TestHelpers();
+            var migrationPath = testHelper.SetupMigrationsForTests(true, Guid.NewGuid());
+            var fileSystem = new FileSelection(migrationPath);
+            Assert.True(fileSystem.ProspectiveMigrationsExist());
+            testHelper.TearDownMigrationsTested(migrationPath);
+        }
+
+        [Fact]
+        public void verify_migration_path_list()
+        {
+            var testHelper = new TestHelpers();
+            var migrationPath = testHelper.SetupMigrationsForTests(true, Guid.NewGuid());
+            var fileSystem = new FileSelection(migrationPath);
+            var result = fileSystem.ShowMigrationPath();
+            Assert.True(result.Ready());
+            testHelper.TearDownMigrationsTested(migrationPath);
+        }
+
+        [Fact]
+        public void verify_path_avialable()
+        {
+            var fileSystem = new FileSelection();
+            Assert.Equal(fileSystem.OperationsPath(), Directory.GetCurrentDirectory());
+        }
+
         [Fact]
         public void verify_selected_path_available()
         {
@@ -24,44 +71,6 @@ namespace CassieCoreLibTests
             var fileSelection = new FileSelection(newPath);
             Assert.Equal(fileSelection.OperationsPath(), newPath);
             Directory.Delete(newPath);
-        }
-
-        [Fact]
-        public void verify_path_avialable()
-        {
-            var fileSystem = new FileSelection();
-            Assert.Equal(fileSystem.OperationsPath(), Directory.GetCurrentDirectory());
-        }
-
-        [Fact]
-        public void verify_migration_files_exist()
-        {
-            var migrationPath = testHelpers.setupMigrationsForTests(out var createThese);
-
-            var fileSystem = new FileSelection(migrationPath);
-            Assert.True(fileSystem.MigrationsExist());
-                
-            testHelpers.tearDownMigrationsTested(createThese, migrationPath);
-        }
-
-        [Fact]
-        public void verify_migration_files_do_not_exist()
-        {
-            var migrationPath = testHelpers.setupMigrationsForTests(out var createThese);
-            
-            Assert.Null(migrationPath);
-            
-            testHelpers.tearDownMigrationsTested(createThese, migrationPath);
-        }
-
-        [Fact]
-        public void verify_list_of_file_to_process()
-        {
-            var migrationPath = testHelpers.setupMigrationsForTests(out var createThese);
-            
-            Assert.Null(migrationPath);
-            
-            testHelpers.tearDownMigrationsTested(createThese, migrationPath);
         }
     }
 }
