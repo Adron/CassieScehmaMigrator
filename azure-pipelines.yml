@@ -9,12 +9,7 @@ trigger:
 pool:
   vmImage: 'windows-latest'
 
-variables:
-  solution: '*.sln'
-  buildPlatform: 'Any CPU'
-  buildConfiguration: 'Release'
-
-- task: DotNetCoreCLI@2
+- task: VSBuild@1
   inputs:
-    command: 'build'
-    projects: '''$(Solution)'''
+    solution: '**\*.sln'
+    restoreNugetPackages: true
