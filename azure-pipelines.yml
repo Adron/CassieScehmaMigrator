@@ -12,4 +12,7 @@ pool:
 steps:
 - task: CmdLine@2
   inputs:
+    script: 'dotnet restore CassieSchemaMigrator.sln'
+- task: CmdLine@2
+  inputs:
     script: 'dotnet build CassieSchemaMigrator.sln'
