@@ -12,4 +12,4 @@ pool:
 - task: VSBuild@1
   inputs:
     solution: '**\*.sln'
-    restoreNugetPackages: true
+    restoreNugetPackages: false
