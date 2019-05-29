@@ -13,3 +13,4 @@ pool:
   inputs:
     command: 'restore'
     feedsToUse: 'select'
+
