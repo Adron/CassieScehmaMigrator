@@ -7,9 +7,9 @@ trigger:
 - master
 
 pool:
-  vmImage: 'ubuntu-16.04' 
+  vmImage: 'ubuntu-18.04' 
 
 steps:
 - task: CmdLine@2
   inputs:
-    script: dotnet build CassieSchemaMigrator.sln'
+    script: 'dotnet build CassieSchemaMigrator.sln'
