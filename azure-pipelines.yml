@@ -14,14 +14,6 @@ variables:
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
 
-steps:
-- task: This DotNetCoreCLI@2
-  inputs:
-    command: 'restore'
-    projects: '''$(Solution)'''
-    feedsToUse: 'select'
-    vstsFeed: '/a1de91ce-ad01-429c-9dfa-67488ee6b018'
-
 - task: DotNetCoreCLI@2
   inputs:
     command: 'build'
