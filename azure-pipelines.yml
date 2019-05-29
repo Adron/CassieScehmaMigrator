@@ -9,3 +9,8 @@ trigger:
 pool:
   vmImage: 'windows-latest'
 
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'restore'
+    projects: '**/.csproj'
+    feedsToUse: 'select'
