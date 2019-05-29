@@ -7,10 +7,14 @@ trigger:
 - master
 
 pool:
-  vmImage: 'windows-latest'
+  vmImage: 'ubuntu-16.04' 
 
+steps:
 - task: DotNetCoreCLI@2
   inputs:
     command: 'restore'
-    projects: 'CassieCoreLib/CassieCoreLib.csproj'
+    projects: '**/*.csproj'
     feedsToUse: 'select'
+    vstsFeed: '/a1de91ce-ad01-429c-9dfa-67488ee6b018'
+
+
