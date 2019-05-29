@@ -15,7 +15,7 @@ variables:
   buildConfiguration: 'Release'
 
 steps:
-- task: DotNetCoreCLI@2
+- task: This DotNetCoreCLI@2
   inputs:
     command: 'restore'
     projects: '''$(Solution)'''
