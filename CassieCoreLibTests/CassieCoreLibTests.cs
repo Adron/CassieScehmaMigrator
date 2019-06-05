@@ -8,6 +8,47 @@ namespace CassieCoreLibTests
     public class CassieCoreLibTests
     {
         [Fact]
+        public void verify_tasks_are_for_down_migration_when_down_migration_called()
+        {
+            var testHelper = new TestHelpers();
+            var migrationPath = testHelper.SetupMigrationsForTests(true, Guid.NewGuid());
+
+            var result = new FileSelection(migrationPath).GetFiles();
+            
+            testHelper.TearDownMigrationsTested(migrationPath);
+            
+            throw new NotImplementedException("Test for only down or only down based on call. Probably want to add the pertinent functionality in method.");
+        }
+        
+        [Fact]
+        public void verify_tasks_are_for_up_migration_when_up_migration_called()
+        {
+            var testHelper = new TestHelpers();
+            var migrationPath = testHelper.SetupMigrationsForTests(true, Guid.NewGuid());
+
+            var result = new FileSelection(migrationPath).GetFiles();
+            
+            testHelper.TearDownMigrationsTested(migrationPath);
+            
+            throw new NotImplementedException("Test for only up or only down based on call. Probably want to add the pertinent functionality in method.");
+        }
+        
+        [Fact]
+        public void verify_tasks_are_ordered()
+        {
+            var testHelper = new TestHelpers();
+            var migrationPath = testHelper.SetupMigrationsForTests(true, Guid.NewGuid());
+
+            var result = new FileSelection(migrationPath).GetFiles();
+            
+            testHelper.TearDownMigrationsTested(migrationPath);
+            
+            throw new NotImplementedException("Verify tests are ordered appropriately.");
+            
+        }
+
+
+        [Fact]
         public void verify_correct_number_tasks_derived_from_files()
         {
             var testHelper = new TestHelpers();
