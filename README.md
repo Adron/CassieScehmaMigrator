@@ -4,7 +4,7 @@
 
 [![Board Status](https://dev.azure.com/adronhall-datastax/9a23ac19-2e41-4073-9f42-db1e5eed24ee/ac48e326-d8ca-43c6-9121-4bd8c404917a/_apis/work/boardbadge/7fd6a8bf-00a6-4428-a408-22296d75adad)](https://dev.azure.com/adronhall-datastax/9a23ac19-2e41-4073-9f42-db1e5eed24ee/_boards/board/t/ac48e326-d8ca-43c6-9121-4bd8c404917a/Microsoft.RequirementCategory) 
 
-[![GitHub issues](https://img.shields.io/github/issues/Adron/CassieSchemaMigrator.svg) ](https://github.com/Adron/CassieSchemaMigrator/issues)
+[![GitHub issues](https://img.shields.io/github/issues/Adron/CassieSchemaMigrator.svg)](https://github.com/Adron/CassieSchemaMigrator/issues)
 
 [![GitHub issues by-label](https://img.shields.io/github/issues-raw/Adron/CassieSchemaMigrator/good first issue.svg)](https://github.com/Adron/CassieSchemaMigrator/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22)
 
