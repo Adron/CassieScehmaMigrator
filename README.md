@@ -6,7 +6,7 @@
 
 [![GitHub issues](https://img.shields.io/github/issues/Adron/CassieSchemaMigrator.svg)](https://github.com/Adron/CassieSchemaMigrator/issues)
 
-[![GitHub issues by-label](https://img.shields.io/github/issues-raw/Adron/CassieSchemaMigrator/good first issue.svg)](https://github.com/Adron/CassieSchemaMigrator/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22)
+[![GitHub issues by-label](https://img.shields.io/github/issues-raw/Adron/CassieSchemaMigrator/good+first+issue.svg)](https://github.com/Adron/CassieSchemaMigrator/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22)
 
 [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/Adron/CassieSchemaMigrator/issues)
 
