@@ -4,6 +4,8 @@
 
 [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/Adron/CassieSchemaMigrator/issues)
 
+[![Twitter Follow](https://img.shields.io/twitter/follow/Adron.svg?style=social)](https://twitter.com/Adron) [![Twitter Follow](https://img.shields.io/twitter/follow/ThrashingCode.svg?style=social)](https://twitter.com/ThrashingCode)
+
 Cassie Schema Migrator (CSM) tool for running Apache Cassandra and DataStax Enterprise (DSE) schema migrations.
 
 ## CSM = Cassie Schema Migrator
