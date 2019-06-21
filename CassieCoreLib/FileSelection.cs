@@ -41,9 +41,7 @@ namespace CassieCoreLib
                 {
                     DateTime dateOfMigration;
                     bool parsedYa = DateTime.TryParse(fileNameParts[0], out dateOfMigration);
-
                     var thePart = fileNameParts[fileNameParts.Length - 2];
-                    
                     var upDown = Enum.TryParse<Migration>(thePart, true, out var migration);
 
                     if (parsedYa
@@ -51,7 +49,6 @@ namespace CassieCoreLib
                         && fileToCheck.Extension == ".cql"
                         && upDown)
                     {
-                        
                         var retrievedCql = File.ReadAllText(fileToCheck.FullName);
                         var migrationTask = new SchemaMigrationTask(
                             fileToCheck,
