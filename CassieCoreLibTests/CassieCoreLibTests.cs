@@ -8,6 +8,18 @@ namespace CassieCoreLibTests
     public class CassieCoreLibTests
     {
         [Fact]
+        public void execute_up_migration()
+        {
+            var migrationPath = GetMigrationsToExecute(out var migrationsToExecute);
+            DockerHelpers.DockerRunCassie(migrationPath);
+
+            DockerHelpers.DockerDestroyCassie(migrationPath);
+            TestHelpers.TearDownMigrationsTested(migrationPath);
+            
+            throw new NotImplementedException("This needs to test the migration against the database.");
+        }
+        
+        [Fact]
         public void verify_tasks_are_for_down_migration_when_down_migration_called()
         {
             var migrationPath = GetMigrationsToExecute(out var migrationsToExecute);
@@ -83,18 +95,6 @@ namespace CassieCoreLibTests
             Assert.True(migrationsToExecute.Ready());
 
             TestHelpers.TearDownMigrationsTested(migrationPath);
-        }
-
-        [Fact]
-        public void execute_up_migration()
-        {
-            throw new NotImplementedException("For this remember the database will actually need to be checked... i.e. docker magic!");
-        }
-
-        [Fact]
-        public void execute_down_migration()
-        {
-            throw new NotImplementedException("For this remember the database will actually need to be checked... i.e. docker magic!");
         }
 
         [Fact]
