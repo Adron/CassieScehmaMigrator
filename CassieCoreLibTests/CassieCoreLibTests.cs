@@ -70,9 +70,13 @@ namespace CassieCoreLibTests
             var filesToProcess = new FileSelection(migrationPath).GetFiles();
             var migrationsToExecute = new MigrationPath(filesToProcess);
             var migrateUpMigrations = migrationsToExecute.Path(Migration.Down);
+
+            foreach (var migration in migrateUpMigrations)
+            {
+                Assert.Equal(Migration.Down, migration.MigrationType);
+            }
+
             testHelper.TearDownMigrationsTested(migrationPath);
-            
-            throw new NotImplementedException("This test is where we've left off. Verify the list is sorted for down migrations.");
         }
 
         [Fact]
@@ -84,11 +88,9 @@ namespace CassieCoreLibTests
             var filesToProcess = new FileSelection(migrationPath).GetFiles();
             var migrationsToExecute = new MigrationPath(filesToProcess);
             
-//            Assert.True(migrationsToExecute.Ready());
-            
+            Assert.True(migrationsToExecute.Ready());
+
             testHelper.TearDownMigrationsTested(migrationPath);
-            
-            throw new NotImplementedException("Test method needs implemented.");
         }
 
         [Fact]
