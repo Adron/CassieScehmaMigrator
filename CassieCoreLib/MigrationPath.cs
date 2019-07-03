@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace CassieCoreLib
 {
@@ -27,15 +28,16 @@ namespace CassieCoreLib
         public DateTime OrderDate { get; set; }
     }
 
-    public class MigrationPath
+    public class MigrationPath 
     {
         private bool _ready;
-
+        private List<SchemaMigrationTask> migrations;
         public MigrationPath(List<SchemaMigrationTask> migrationTasks)
         {
+            migrations = new List<SchemaMigrationTask>();
             foreach (var task in migrationTasks)
             {
-                // TODO: Build the tasks and get the CQL to process/execute.
+                migrations.Add(task);
             }
 
             _ready = true;
@@ -44,6 +46,25 @@ namespace CassieCoreLib
         public bool Ready()
         {
             return _ready;
+        }
+
+        public bool Migrate()
+        {
+            return false;
+        }
+
+        public List<SchemaMigrationTask> Path(Migration upDown)
+        {
+            List<SchemaMigrationTask> migrationPath = new List<SchemaMigrationTask>();
+            
+            foreach (var migration in migrations){
+                if (migration.MigrationType == upDown)
+                {
+                    migrationPath.Add(migration);
+                }
+            }
+            
+            return migrationPath.OrderBy(o => o.OrderDate).ToList();
         }
     }
 }
