@@ -7,26 +7,17 @@ namespace CassieCoreLibTests
 {
     public class TestHelpers
     {
-        string _cassieVersion = "cassandra:3.11.4";
-        string _network = "default";
-        
-        public TestHelpers()
-        {
-            CreateThese = new List<string>();
-        }
+        public static List<string> CreateThese { get; set; }
 
-        public List<string> CreateThese { get; }
-
-        public void TearDownMigrationsTested(string migrationPath)
+        public static void TearDownMigrationsTested(string migrationPath)
         {
             Directory.Delete(migrationPath, true);
-            ExecDocker("stop " + migrationPath);
-            ExecDocker("rm " + migrationPath);
         }
 
-        public string SetupMigrationsForTests(bool settingUp, Guid migrationIdentifier)
+        public static string SetupMigrationsForTests(bool settingUp, Guid migrationIdentifier)
         {  
-            var migrationForCassie = "migration-" + migrationIdentifier + "-for-cassie";
+            CreateThese = new List<string>();
+            var migrationForCassie = $"migration-{migrationIdentifier}-for-cassie";
             
             Directory.CreateDirectory(migrationForCassie);
             var directory = new DirectoryInfo(migrationForCassie);
@@ -34,17 +25,8 @@ namespace CassieCoreLibTests
             if (!settingUp) return migrationForCassie;
             
             TestStationMigrationContents.CreateFilesAndContentsForIntegrationTest(directory);
-
-            ExecDocker("run --name " + migrationForCassie + " --network " + _network + " -d " + _cassieVersion);
             
             return migrationForCassie;
-        }
-
-       
-
-        private static void ExecDocker(string command)
-        {
-            Process.Start("docker", command);
         }
     }
 
