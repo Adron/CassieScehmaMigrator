@@ -48,8 +48,10 @@ namespace CassieCoreLib
             return _ready;
         }
 
-        public bool Migrate()
+        public bool Migrate(Migration upDown)
         {
+            var path = this.Path(upDown);
+            
             return false;
         }
 

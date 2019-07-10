@@ -8,6 +8,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CassieConsole", "CassieCons
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DockerExamples", "DockerExamples\DockerExamples.csproj", "{5A1C7B0F-5C81-4BF4-A508-EA78BB57F1DC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DockerForTests", "DockerForTests\DockerForTests.csproj", "{6B79646A-22F5-4DDA-AAC5-06CFB5EB36B3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,5 +32,9 @@ Global
 		{5A1C7B0F-5C81-4BF4-A508-EA78BB57F1DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5A1C7B0F-5C81-4BF4-A508-EA78BB57F1DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5A1C7B0F-5C81-4BF4-A508-EA78BB57F1DC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6B79646A-22F5-4DDA-AAC5-06CFB5EB36B3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6B79646A-22F5-4DDA-AAC5-06CFB5EB36B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6B79646A-22F5-4DDA-AAC5-06CFB5EB36B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6B79646A-22F5-4DDA-AAC5-06CFB5EB36B3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

@@ -8,11 +8,20 @@ namespace CassieCoreLibTests
     public class CassieCoreLibTests
     {
         [Fact]
+        public void verify_destination_database()
+        {
+            var destinationDb = new DestinationDatabase();
+            Assert.True(destinationDb.VerifyConnection());
+        }
+
+        [Fact]
         public void execute_up_migration()
         {
             var migrationPath = GetMigrationsToExecute(out var migrationsToExecute);
             DockerHelpers.DockerRunCassie(migrationPath);
 
+            Assert.True(migrationsToExecute.Migrate(Migration.Up));
+            
             DockerHelpers.DockerDestroyCassie(migrationPath);
             TestHelpers.TearDownMigrationsTested(migrationPath);
             

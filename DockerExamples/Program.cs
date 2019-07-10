@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Diagnostics;
+using DockerForTests;
 
 namespace DockerExamples
 {
@@ -10,33 +10,13 @@ namespace DockerExamples
         private static string _network = "default";
 
         static void Main(string[] args)
-         {
-             DockerRunCassie();
-             
-//             DockerStopCassie();
-//             CassieRemoved();
-         }
-
-         private static void DockerRunCassie()
-         {
-             string command = "run --name " + _cassieName + " --network " + _network + " -d " + _cassieVersion;
-             Console.WriteLine(command);
-             ExecDocker(command);
-         }
-
-         private static void DockerStopCassie()
-         {
-            ExecDocker("stop " +  _cassieName);   
-         }
-
-         private static void CassieRemoved()
-         {
-             ExecDocker("rm " + _cassieName);
-         }
-
-         private static void ExecDocker(string command)
-         {
-             Process.Start("docker", command);
-         }
+        {
+            var docker4Tests = new DockerCruft(_cassieName, _network, _cassieVersion);
+          
+            docker4Tests.DockerRunCassie();
+            Console.WriteLine(docker4Tests.GetDockerAddress());
+            docker4Tests.DockerStopCassie();
+            docker4Tests.DockerRemoveCassie();
+        }
     }
 }
