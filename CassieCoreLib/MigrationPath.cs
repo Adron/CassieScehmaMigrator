@@ -48,9 +48,9 @@ namespace CassieCoreLib
             return _ready;
         }
 
-        public bool Migrate(Migration upDown)
+        public bool (Migration upDown)
         {
-            var path = this.Path(upDown);
+            var path = Path(upDown);
             
             return false;
         }

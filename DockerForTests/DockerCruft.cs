@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
+using System.IO;
 using System.Threading;
-using System.Xml;
 
 namespace DockerForTests
 {
@@ -29,9 +29,9 @@ namespace DockerForTests
         {
             Console.WriteLine($"docker {command}");
             Process.Start("docker", command);
-            Thread.Sleep(2000);
+            Thread.Sleep(3000);
             Console.WriteLine("... processing ...");
-            Thread.Sleep(2000);
+            Thread.Sleep(3000);
             Console.WriteLine(finishedStatement);
         }
         
@@ -52,26 +52,30 @@ namespace DockerForTests
 
         public string GetDockerAddress()
         {
-            string command = $"docker inspect --format '{{ .NetworkSettings.IPAddress }}' {_cassieName}";
-
-
-            var proc = new Process
+            string ipAddress;
+            
+            using (var process = new Process())
             {
-                StartInfo = new ProcessStartInfo
-                {
-                    FileName = "docker",
-                    Arguments = command
-                }
-            };
+                var command = " inspect  -f \"{{ .NetworkSettings.IPAddress }}\" " + _cassieName;
+                
+                Console.WriteLine(command);
+                
+                process.StartInfo.FileName = "docker";
+                process.StartInfo.Arguments = command;
+                process.StartInfo.UseShellExecute = false;
+                process.StartInfo.RedirectStandardOutput = true;
+                process.Start();
 
-            proc.Start();
-            var line = string.Empty;
-            while (!proc.StandardOutput.EndOfStream)
-            {
-                line = proc.StandardOutput.ReadLine();
+                var reader = process.StandardOutput;
+                var output = reader.ReadLine();
+
+                Console.WriteLine(output);
+                ipAddress = output;
+                
+                process.WaitForExit();
             }
 
-            return line;
+            return ipAddress;
         }
     }
 }

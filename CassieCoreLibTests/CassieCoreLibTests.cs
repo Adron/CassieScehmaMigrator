@@ -25,7 +25,6 @@ namespace CassieCoreLibTests
             DockerHelpers.DockerDestroyCassie(migrationPath);
             TestHelpers.TearDownMigrationsTested(migrationPath);
             
-            throw new NotImplementedException("This needs to test the migration against the database.");
         }
         
         [Fact]
