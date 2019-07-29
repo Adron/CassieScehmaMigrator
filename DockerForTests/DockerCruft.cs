@@ -13,18 +13,57 @@ namespace DockerForTests
 
         public DockerCruft()
         {
+            SetContainerDefaults();
+        }
+        
+        public DockerCruft(bool startCassandra)
+        {
+            SetContainerDefaults();
+            SetCassandraConfiguration(_cassieName, _network, _cassieVersion, startCassandra);
+        }
+
+        public DockerCruft(string containerName)
+        {
+            SetContainerDefaults();
+            _cassieName = containerName;
+            SetCassandraConfiguration(_cassieName, _network, _cassieVersion, false);
+        }
+        
+        public DockerCruft(string containerName, bool startCassandra)
+        {
+            SetContainerDefaults();
+            _cassieName = containerName;
+            SetCassandraConfiguration(_cassieName, _network, _cassieVersion, startCassandra);
+        }
+
+        public DockerCruft(string containerName, string network, string cassieVersion)
+        {
+            SetCassandraConfiguration(containerName, network, cassieVersion, false);
+        }
+        
+        public DockerCruft(string containerName, string network, string cassieVersion, bool startCassandra)
+        {
+            SetCassandraConfiguration(containerName, network, cassieVersion, startCassandra);
+        }
+
+        private void SetContainerDefaults()
+        {
             _cassieName = $"cassie-{Guid.NewGuid()}-for-testing";
             _network = "default";
             _cassieVersion = "cassandra:3.11.4";
         }
 
-        public DockerCruft(string containerName, string network, string cassieVersion)
+        private void SetCassandraConfiguration(string containerName, string network, string cassieVersion, bool startCassandra)
         {
             _cassieName = containerName;
             _network = network;
             _cassieVersion = cassieVersion;
+            if (startCassandra)
+            {
+                DockerRunCassie();
+            }
         }
-        
+
         private  void ExecDocker(string command, string finishedStatement)
         {
             Console.WriteLine($"docker {command}");
@@ -48,6 +87,12 @@ namespace DockerForTests
         public void DockerRemoveCassie()
         {
             ExecDocker($"rm {_cassieName}", "Removed container.");
+        }
+
+        public void DockerStopRemoveCassie()
+        {
+            DockerStopCassie();
+            DockerRemoveCassie();
         }
 
         public string GetDockerAddress()

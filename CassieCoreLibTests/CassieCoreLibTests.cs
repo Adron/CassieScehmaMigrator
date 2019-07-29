@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using CassieCoreLib;
+using DockerForTests;
 using Xunit;
 
 namespace CassieCoreLibTests
@@ -10,21 +11,33 @@ namespace CassieCoreLibTests
         [Fact]
         public void verify_destination_database()
         {
-            var destinationDb = new DestinationDatabase();
-            Assert.True(destinationDb.VerifyConnection());
+            var destinationDb = new DestinationDatabase("127.0.0.1");
+            Assert.False(destinationDb.VerifyConnection());
         }
+        
+        [Fact]
+        public void verify_destination_database_keyspaces()
+        {
+            var docker = new DockerCruft("test_keyspace", true);
 
+            var address = docker.GetDockerAddress();            
+            var destinationDb = new DestinationDatabase(address);
+            
+            Assert.True(destinationDb.VerifyConnection());
+            
+            docker.DockerStopRemoveCassie();
+        }
+        
         [Fact]
         public void execute_up_migration()
         {
             var migrationPath = GetMigrationsToExecute(out var migrationsToExecute);
-            DockerHelpers.DockerRunCassie(migrationPath);
+            var docker = new DockerCruft("test_up_migration", true);
 
             Assert.True(migrationsToExecute.Migrate(Migration.Up));
             
-            DockerHelpers.DockerDestroyCassie(migrationPath);
+            docker.DockerStopRemoveCassie();
             TestHelpers.TearDownMigrationsTested(migrationPath);
-            
         }
         
         [Fact]

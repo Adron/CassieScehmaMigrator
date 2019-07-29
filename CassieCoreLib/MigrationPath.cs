@@ -52,6 +52,13 @@ namespace CassieCoreLib
         {
             var path = Path(upDown);
             
+            // Connect to database.
+            // Run CQL for all migrations.
+            // Finish.
+            
+            
+            
+            
             return false;
         }
 
