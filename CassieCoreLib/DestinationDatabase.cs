@@ -6,6 +6,8 @@ namespace CassieCoreLib
 {
     public class DestinationDatabase
     {
+        public string KeyspaceCasmaHistory = "casma_history";
+        
         public DestinationDatabase(string address)
         {
             var ip = IPAddress.Parse(address);
@@ -21,9 +23,7 @@ namespace CassieCoreLib
             try
             {
                 RunCassieQueryScript(
-                    "insert into casma_history.history (step, details, stamp, success) values ('conn_validate','Verifying the connection to the database cluster.', toTimestamp(now()), true)");
-                RunCassieQueryScript(
-                    "SELECT step FROM casma_history.history WHERE step='conn_validate' LIMIT 1 ALLOW FILTERING");
+                    "insert into casma_history.history (step, details, stamp, success) values ('conn_validate','Verifying the connection to the database cluster.', toTimestamp(now()), true)", KeyspaceCasmaHistory);
                 connectionStatus = true;
             }
             catch (Exception e)
@@ -33,7 +33,7 @@ namespace CassieCoreLib
             finally
             {
                 RunCassieQueryScript("insert into casma_history.history (step, details, stamp, success) values ('conn_validated','Verified the connection to the database cluster.', toTimestamp(now()), " + 
-                                     connectionStatus + ")");
+                                     connectionStatus + ")",KeyspaceCasmaHistory);
             }
             return connectionStatus;
         }
@@ -41,24 +41,22 @@ namespace CassieCoreLib
         private void CaSMaInception(IPAddress address)
         {
             DatabaseAddress = address;
-            RunCassieQueryScript("create keyspace if not exists casma_history with replication = {'class':'SimpleStrategy','replication_factor':1};");
-            RunCassieQueryScript($"create table casma_history.history(stamp timestamp,step text primary key,details text,success boolean);");
-        }
-
-        private Boolean RunCassieQueryScript(string command)
-        {
-            var success = false;
+            RunCassieQueryScript("create keyspace if not exists casma_history with replication = {'class':'SimpleStrategy','replication_factor':1};", "");
+            RunCassieQueryScript($"create table if not exists history (step text,details text,stamp timestamp,success boolean,primary key ((success), step, details, stamp));", KeyspaceCasmaHistory);
             
+        }
+        
+        private Boolean RunCassieQueryScript(string command, string keyspace)
+        {
             try
             {
                 var cluster = Cluster.Builder()
                     .AddContactPoints(DatabaseAddress)
                     .Build();
 
-                var session = cluster.Connect();
+                var session = string.IsNullOrWhiteSpace(keyspace) ? cluster.Connect() : cluster.Connect(keyspace);
                 var result = session.Execute(command);
                 Console.WriteLine(result.ToString());
-                success = true;
             }
             catch (NoHostAvailableException noHostError)
             {
@@ -72,7 +70,7 @@ namespace CassieCoreLib
                 throw;
             }
 
-            return success;
+            return true;
         }
     }
 }

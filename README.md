@@ -9,3 +9,8 @@ Cassie Schema Migrator (CSM) tool for running Apache Cassandra and DataStax Ente
 ## CSM = Cassie Schema Migrator
 
 Mission: Building an application using C# to do Apache Cassandra / DSE Data Schema Migrations.
+
+## Prerequisites
+
+I've made the assumption, for the time being, that Apache Cassandra is installed and available - single node or a full cluster - at 127.0.0.1. With that installed all tests should pass for development purposes. However it would be good to change this so the value is derived from a configuration setting so the dev database can be setup anywhere.
+

@@ -1,72 +1,38 @@
 using System;
 using System.IO;
-using System.Threading;
 using CassieCoreLib;
-using DockerForTests;
 using Xunit;
-using Xunit.Abstractions;
 
 namespace CassieCoreLibTests
 {
     public class CassieCoreLibTests
     {
-        private readonly ITestOutputHelper _testOutputHelper;
-
-        public CassieCoreLibTests(ITestOutputHelper testOutputHelper)
-        {
-            _testOutputHelper = testOutputHelper;
-        }
-
         [Fact]
         public void verify_destination_database()
         {
             var destinationDb = new DestinationDatabase("127.0.0.1");
-            Assert.False(destinationDb.VerifyConnection());
+            Assert.True(destinationDb.VerifyConnection());
         }
-        
-        [Fact]
-        public void verify_destination_database_keyspaces()
-        {
-            var docker = new DockerCruft("test_keyspace", true);
-            
-            try
-            {
-                var address = docker.GetDockerAddress(); 
-                Thread.Sleep(10000);
-                var destinationDb = new DestinationDatabase(address);
-            
-                Assert.True(destinationDb.VerifyConnection());
-            }
-            catch (Exception e)
-            {
-                _testOutputHelper.WriteLine(e.ToString());
-                throw;
-            }
-            finally
-            {
-                docker.DockerStopRemoveCassie();    
-            }
-        }
-        
+     
         [Fact]
         public void verify_tasks_are_for_down_migration_when_down_migration_called()
         {
-            var migrationPath = GetMigrationsToExecute(out var migrationsToExecute);
+            var path = GetMigrationsToExecute(out var migrationsToExecute);
 
             foreach(var migration in migrationsToExecute.Path(Migration.Down))
             {
                 Assert.Equal(Migration.Down, migration.MigrationType);
             }
 
-            TestHelpers.TearDownMigrationsTested(migrationPath);
+            TestHelpers.TearDownMigrationsTested(path);
         }
 
         [Fact]
         public void verify_tasks_are_for_up_migration_when_up_migration_called()
         {
-            var migrationPath = TestHelpers.SetupMigrationsForTests(true, Guid.NewGuid());
+            var path = TestHelpers.SetupMigrationsForTests(true, Guid.NewGuid());
 
-            var filesToProcess = new FileSelection(migrationPath).GetFiles();
+            var filesToProcess = new FileSelection(path).GetFiles();
             var migrationsToExecute = new MigrationPath(filesToProcess);
             
             foreach(var migration in migrationsToExecute.Path(Migration.Up))
@@ -74,16 +40,16 @@ namespace CassieCoreLibTests
                 Assert.Equal(Migration.Up, migration.MigrationType);
             }
             
-            TestHelpers.TearDownMigrationsTested(migrationPath);
+            TestHelpers.TearDownMigrationsTested(path);
             
         }
         
         [Fact]
         public void verify_tasks_are_ordered_for_up_migration()
         {
-            var migrationPath = TestHelpers.SetupMigrationsForTests(true, Guid.NewGuid());
+            var path = TestHelpers.SetupMigrationsForTests(true, Guid.NewGuid());
 
-            var filesToProcess = new FileSelection(migrationPath).GetFiles();
+            var filesToProcess = new FileSelection(path).GetFiles();
             var migrationsToExecute = new MigrationPath(filesToProcess);
             var migrateUpMigrations = migrationsToExecute.Path(Migration.Up);
             
@@ -93,7 +59,7 @@ namespace CassieCoreLibTests
             Assert.Equal("march 01 2009.doing-other-bits.up.cql", migrateUpMigrations[3].TaskFile.Name);
             Assert.Equal("01 02 2010.doing-more-stuff.up.cql", migrateUpMigrations[4].TaskFile.Name);
             
-            TestHelpers.TearDownMigrationsTested(migrationPath);
+            TestHelpers.TearDownMigrationsTested(path);
         }
         
         [Fact]
@@ -190,10 +156,10 @@ namespace CassieCoreLibTests
         
         private static string GetMigrationsToExecute(out MigrationPath migrationsToExecute)
         {
-            var migrationPath = TestHelpers.SetupMigrationsForTests(true, Guid.NewGuid());
-            var filesToProcess = new FileSelection(migrationPath).GetFiles();
+            var path = TestHelpers.SetupMigrationsForTests(true, Guid.NewGuid());
+            var filesToProcess = new FileSelection(path).GetFiles();
             migrationsToExecute = new MigrationPath(filesToProcess);
-            return migrationPath;
+            return path;
         }
     }
 }
