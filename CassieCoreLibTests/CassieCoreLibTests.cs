@@ -1,13 +1,22 @@
 using System;
 using System.IO;
+using System.Threading;
 using CassieCoreLib;
 using DockerForTests;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace CassieCoreLibTests
 {
     public class CassieCoreLibTests
     {
+        private readonly ITestOutputHelper _testOutputHelper;
+
+        public CassieCoreLibTests(ITestOutputHelper testOutputHelper)
+        {
+            _testOutputHelper = testOutputHelper;
+        }
+
         [Fact]
         public void verify_destination_database()
         {
@@ -19,25 +28,24 @@ namespace CassieCoreLibTests
         public void verify_destination_database_keyspaces()
         {
             var docker = new DockerCruft("test_keyspace", true);
-
-            var address = docker.GetDockerAddress();            
-            var destinationDb = new DestinationDatabase(address);
             
-            Assert.True(destinationDb.VerifyConnection());
+            try
+            {
+                var address = docker.GetDockerAddress(); 
+                Thread.Sleep(10000);
+                var destinationDb = new DestinationDatabase(address);
             
-            docker.DockerStopRemoveCassie();
-        }
-        
-        [Fact]
-        public void execute_up_migration()
-        {
-            var migrationPath = GetMigrationsToExecute(out var migrationsToExecute);
-            var docker = new DockerCruft("test_up_migration", true);
-
-            Assert.True(migrationsToExecute.Migrate(Migration.Up));
-            
-            docker.DockerStopRemoveCassie();
-            TestHelpers.TearDownMigrationsTested(migrationPath);
+                Assert.True(destinationDb.VerifyConnection());
+            }
+            catch (Exception e)
+            {
+                _testOutputHelper.WriteLine(e.ToString());
+                throw;
+            }
+            finally
+            {
+                docker.DockerStopRemoveCassie();    
+            }
         }
         
         [Fact]
