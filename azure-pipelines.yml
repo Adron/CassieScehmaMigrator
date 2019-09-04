@@ -7,10 +7,10 @@ trigger:
   - master
 
 pool:
-  vmImage: 'ubuntu-16.04'
+  vmImage: 'ubuntu-18.04'
 
 steps:
-  - task: CmdLine@2
+  - task: CmdLine@1
     name: "Restore"
     inputs:
       script: 'dotnet restore CassieSchemaMigrator.sln'
@@ -18,7 +18,8 @@ steps:
     name: "Build"
     inputs:
       script: 'dotnet build CassieSchemaMigrator.sln'
-  - task: CoreConsoleDeployLinux
-    name: "Deploy-linux-x64"
+  - task: CoreConsoleDeployLinux@3
+    name: "Deploy"
+    description: "linux-x64 Deployment"
     inputs:
-      script: 'publish -c Release -r linux-x64 --self-contained true'
+      script: 'dotnet publish -c Release -r linux-x64 --self-contained true'
