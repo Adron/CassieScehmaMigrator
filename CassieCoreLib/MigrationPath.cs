@@ -17,13 +17,13 @@ namespace CassieCoreLib
         public SchemaMigrationTask(FileInfo taskFile, string cql, Migration migrationType, DateTime orderDate)
         {
             TaskFile = taskFile;
-            CQL = cql;
+            Cql = cql;
             MigrationType = migrationType;
             OrderDate = orderDate;
         }
 
         public FileInfo TaskFile { get; set; }
-        public string CQL { get; set; }
+        public string Cql { get; set; }
         public Migration MigrationType { get; set; }
         public DateTime OrderDate { get; set; }
     }
@@ -50,21 +50,26 @@ namespace CassieCoreLib
 
         public bool Migrate(Migration upDown)
         {
-            var path = Path(upDown);
+            var db = new DestinationDatabase("127.0.0.1");
+            try
+            {
+                foreach (var migration in Path(upDown))
+                {
+                    db.RunCassieQueryScript(migration.Cql, "");
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
             
-            // Connect to database.
-            // Run CQL for all migrations.
-            // Finish.
-            
-            
-            
-            
-            return false;
+            return true;
         }
 
         public List<SchemaMigrationTask> Path(Migration upDown)
         {
-            List<SchemaMigrationTask> migrationPath = new List<SchemaMigrationTask>();
+            var migrationPath = new List<SchemaMigrationTask>();
             
             foreach (var migration in migrations){
                 if (migration.MigrationType == upDown)

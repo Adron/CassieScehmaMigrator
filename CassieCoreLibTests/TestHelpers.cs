@@ -29,18 +29,19 @@ namespace CassieCoreLibTests
             return migrationForCassie;
         }
     }
-
+    
     public static class TestStationMigrationContents
     {
-        public static readonly string MigrationUpValid1Cql = "SELECT * FROM cheese;";
-        public static readonly string MigrationUpValid2Cql = "SELECT * FROM cheese;";
-        public static readonly string MigrationUpValid3Cql = "SELECT * FROM cheese;";
-        public static readonly string MigrationUpValid4Cql = "SELECT * FROM cheese;";
-        public static readonly string MigrationUpValid5Cql = "SELECT * FROM cheese;";
-        public static readonly string MigrationDownValid1Cql = "SELECT * FROM cheese;";
-        public static readonly string MigrationDownValid2Cql = "SELECT * FROM cheese;";
-        public static readonly string MigrationDownValid3Cql = "SELECT * FROM cheese;";
-        public static readonly string MigrationDownValid4Cql = "SELECT * FROM cheese;";
+        public static readonly string MigrationUpValid1Cql = "create table if not exists casma_history.unit_test_table(id uuid,email text,name text,location text,primary key ((location), email, name));";
+        public static readonly string MigrationUpValid2Cql = "alter table casma_history.unit_test_table add another_col text;";
+        public static readonly string MigrationUpValid3Cql = "create table if not exists casma_history.aKewltable(name text, email text, notes text, primary key (name, email));";
+        public static readonly string MigrationUpValid4Cql =
+            "create keyspace if not exists shouldNotSeeThisEvah with replication = { 'class': 'SimpleStrategy', 'replication_factor': 1 };";
+        public static readonly string MigrationUpValid5Cql = "select * from casma_history.unit_test_table";
+        public static readonly string MigrationDownValid1Cql = "drop keyspace shouldnotseethisevah;";
+        public static readonly string MigrationDownValid2Cql = "drop table casma_history.akewltable;";
+        public static readonly string MigrationDownValid3Cql = "drop table casma_history.unit_test_table;";
+        public static readonly string MigrationDownValid4Cql = "select * from casma_history.history;";
         
          public static void CreateFilesAndContentsForIntegrationTest(DirectoryInfo directory)
         {

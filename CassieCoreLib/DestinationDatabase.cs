@@ -46,7 +46,7 @@ namespace CassieCoreLib
             
         }
         
-        private Boolean RunCassieQueryScript(string command, string keyspace)
+        public Boolean RunCassieQueryScript(string command, string keyspace)
         {
             try
             {
@@ -69,7 +69,7 @@ namespace CassieCoreLib
                 Console.WriteLine(e);
                 throw;
             }
-
+            
             return true;
         }
     }

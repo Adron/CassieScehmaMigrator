@@ -6,4 +6,8 @@
         
     </PropertyGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\CassieCoreLib\CassieCoreLib.csproj" />
+    </ItemGroup>
+
 </Project>

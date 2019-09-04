@@ -13,7 +13,24 @@ namespace CassieCoreLibTests
             var destinationDb = new DestinationDatabase("127.0.0.1");
             Assert.True(destinationDb.VerifyConnection());
         }
-     
+
+        [Fact]
+        public void verify_migration_execution()
+        {
+            var path = TestHelpers.SetupMigrationsForTests(true, Guid.NewGuid());
+
+            var filesToProcess = new FileSelection(path).GetFiles();
+            var migrationsToExecute = new MigrationPath(filesToProcess);
+
+            var upResult = migrationsToExecute.Migrate(Migration.Up);
+            Assert.True(upResult);
+
+            var downResult = migrationsToExecute.Migrate(Migration.Down);
+            Assert.True(downResult);
+            
+            TestHelpers.TearDownMigrationsTested(path);
+        }
+
         [Fact]
         public void verify_tasks_are_for_down_migration_when_down_migration_called()
         {
@@ -41,7 +58,6 @@ namespace CassieCoreLibTests
             }
             
             TestHelpers.TearDownMigrationsTested(path);
-            
         }
         
         [Fact]
