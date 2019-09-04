@@ -20,6 +20,5 @@ steps:
       script: 'dotnet build CassieSchemaMigrator.sln'
   - task: CoreConsoleDeployLinux@3
     name: "Deploy"
-    description: "linux-x64 Deployment"
     inputs:
       script: 'dotnet publish -c Release -r linux-x64 --self-contained true'
