@@ -10,4 +10,32 @@
       <ProjectReference Include="..\CassieCoreLib\CassieCoreLib.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <_UnmanagedRegistrationCache Remove="obj\CassieConsole.csproj.UnmanagedRegistration.cache" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <_ResolveComReferenceCache Remove="obj\Release\netcoreapp2.2\CassieConsole.csproj.ResolveComReference.cache" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <IntermediateAssembly Remove="obj\Release\netcoreapp2.2\CassieConsole.dll" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <_DebugSymbolsIntermediatePath Remove="obj\Release\netcoreapp2.2\CassieConsole.pdb" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <_DeploymentManifestEntryPoint Remove="obj\Release\netcoreapp2.2\CassieConsole.dll" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ApplicationManifest Remove="obj\Release\netcoreapp2.2\CassieConsole.dll.manifest" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <DeployManifest Remove="obj\Release\netcoreapp2.2\CassieConsole.application" />
+    </ItemGroup>
+
 </Project>

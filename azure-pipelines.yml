@@ -15,3 +15,9 @@ steps:
       command: 'build'
       projects: | 
         CassieSchemaMigrator.sln
+  - task: DotNetCoreCLI@2
+    inputs:
+      command: 'publish'
+      arguments: -o 'linux-x64-cassie'
+      projects: |
+        CassieSchemaMigrator.sln
