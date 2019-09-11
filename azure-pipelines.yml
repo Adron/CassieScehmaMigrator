@@ -15,5 +15,6 @@ steps:
 #      version: '2.2.401'
   - script: dotnet restore
   - script: dotnet build
-  - script: dotnet publish -c Release -r linux-x64 -o cassie-linux-x64 --self-contained true
+  - script: dotnet publish ./CassieConsole/CassieConsole.csproj -c Release -r linux-x64 -o cassie-linux-x64 --self-contained true
+    
     
