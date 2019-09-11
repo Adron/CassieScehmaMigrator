@@ -18,3 +18,7 @@ steps:
     name: "Build"
     inputs:
       script: 'dotnet build CassieSchemaMigrator.sln'
+  - task: CmdLine@3
+    name: "WindowsBuild"
+    inputs:
+      script: 'dotnet publish -c Release -r win-x64 --self-contained true'
