@@ -10,18 +10,18 @@ pool:
   vmImage: 'ubuntu-16.04'
 
 steps:
-  - task: DotNetCoreInstaller@0
-    inputs:
-      version: '2.2.401'
+#  - task: DotNetCoreInstaller@0
+#    inputs:
+#      version: '2.2.401'
+  - script: dotnet restore
   - task: DotNetCoreCLI@2
     inputs:
-      command: 'build'
+      command: build
       projects: | 
         CassieSchemaMigrator.sln
   - task: DotNetCoreCLI@2
+    displayName: Build
     inputs:
-      command: 'publish'
-      publishWebProjects: false
+      command: build
+      projects: '**/*.csproj'
       arguments: -c Release -r linux-x64 --self-contained true
-      projects: |
-        CassieSchemaMigrator.sln
