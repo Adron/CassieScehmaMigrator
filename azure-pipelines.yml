@@ -10,14 +10,6 @@ pool:
   vmImage: 'ubuntu-16.04'
 
 steps:
-  - task: CmdLine@2
-    name: "Restore"
-    inputs:
-      script: 'dotnet restore CassieSchemaMigrator.sln'
-  - task: CmdLine@2
-    name: "Build"
-    inputs:
-      script: 'dotnet build CassieSchemaMigrator.sln'
   - task: DotNetCoreCLI@2
     inputs:
       command: 'build'
