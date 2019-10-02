@@ -6,6 +6,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CassieCoreLib", "CassieCore
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CassieConsole", "CassieConsole\CassieConsole.csproj", "{49C42CA9-C7F3-4C82-885E-D521E917FAFF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CassieConsole.Tests", "CassieConsole.Tests\CassieConsole.Tests.csproj", "{F53E519C-C106-4AC3-A268-228BB0FD7533}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -25,5 +27,9 @@ Global
 		{49C42CA9-C7F3-4C82-885E-D521E917FAFF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{49C42CA9-C7F3-4C82-885E-D521E917FAFF}.Release|Any CPU.Build.0 = Release|Any CPU
 		{49C42CA9-C7F3-4C82-885E-D521E917FAFF}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{F53E519C-C106-4AC3-A268-228BB0FD7533}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F53E519C-C106-4AC3-A268-228BB0FD7533}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F53E519C-C106-4AC3-A268-228BB0FD7533}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F53E519C-C106-4AC3-A268-228BB0FD7533}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
