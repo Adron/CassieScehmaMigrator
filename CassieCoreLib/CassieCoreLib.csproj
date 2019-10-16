@@ -6,7 +6,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="CassandraCSharpDriver" Version="3.11.0" />
+      <PackageReference Include="Dse" Version="2.8.0-dbaas-1" />
     </ItemGroup>
 
 </Project>

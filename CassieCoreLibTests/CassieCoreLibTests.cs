@@ -15,6 +15,15 @@ namespace CassieCoreLibTests
         }
 
         [Fact]
+        public void verify_destination_apollo_database()
+        {
+            // TODO: Add assumption of DB name & such to README.md.
+            var apolloDb = new ApolloDb("adron", "superSecret!", "secrets.zip", "testks");
+            var destinationDb = new DestinationDatabase(apolloDb);
+            Assert.True(destinationDb.VerifyConnection());
+        }
+
+        [Fact]
         public void verify_migration_execution()
         {
             var path = TestHelpers.SetupMigrationsForTests(true, Guid.NewGuid());
@@ -81,9 +90,9 @@ namespace CassieCoreLibTests
         [Fact]
         public void verify_tasks_are_ordered_for_down_migration()
         {
-            var migrationPath = TestHelpers.SetupMigrationsForTests(true, Guid.NewGuid());
+            var path = TestHelpers.SetupMigrationsForTests(true, Guid.NewGuid());
 
-            var filesToProcess = new FileSelection(migrationPath).GetFiles();
+            var filesToProcess = new FileSelection(path).GetFiles();
             var migrationsToExecute = new MigrationPath(filesToProcess);
             var migrateUpMigrations = migrationsToExecute.Path(Migration.Down);
 
@@ -92,7 +101,7 @@ namespace CassieCoreLibTests
                 Assert.Equal(Migration.Down, migration.MigrationType);
             }
 
-            TestHelpers.TearDownMigrationsTested(migrationPath);
+            TestHelpers.TearDownMigrationsTested(path);
         }
 
         [Fact]

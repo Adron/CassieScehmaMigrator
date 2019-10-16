@@ -1,21 +1,31 @@
 using System;
 using System.Net;
-using Cassandra;
+using Dse;
 
 namespace CassieCoreLib
 {
     public class DestinationDatabase
     {
-        public string KeyspaceCasmaHistory = "casma_history";
+        private string _keyspaceCasmaHistory = "casma_history";
+        public bool IsApolloDatabase = false;
         
         public DestinationDatabase(string address)
         {
             var ip = IPAddress.Parse(address);
-            CaSMaInception(ip);
+            DatabaseCluster = GetCluster(ip);
+            CaSMaInception();
         }
-        
-        public IPAddress DatabaseAddress { get; set; }
-        
+
+        public DestinationDatabase(ApolloDb apolloDb)
+        {
+            IsApolloDatabase = true;
+            _keyspaceCasmaHistory = apolloDb.Keyspace;
+            DatabaseCluster = GetCluster(apolloDb);
+            CaSMaInception();
+        }
+
+        private Cluster DatabaseCluster { get; set; }
+
         public bool VerifyConnection()
         {
             var connectionStatus = false;
@@ -23,7 +33,7 @@ namespace CassieCoreLib
             try
             {
                 RunCassieQueryScript(
-                    "insert into casma_history.history (step, details, stamp, success) values ('conn_validate','Verifying the connection to the database cluster.', toTimestamp(now()), true)", KeyspaceCasmaHistory);
+                    "insert into " + _keyspaceCasmaHistory + ".history (step, details, stamp, success) values ('conn_validate','Verifying the connection to the database cluster.', toTimestamp(now()), true) if not exists;", _keyspaceCasmaHistory);
                 connectionStatus = true;
             }
             catch (Exception e)
@@ -32,30 +42,33 @@ namespace CassieCoreLib
             }
             finally
             {
-                RunCassieQueryScript("insert into casma_history.history (step, details, stamp, success) values ('conn_validated','Verified the connection to the database cluster.', toTimestamp(now()), " + 
-                                     connectionStatus + ")",KeyspaceCasmaHistory);
+                RunCassieQueryScript("insert into " + _keyspaceCasmaHistory + ".history (step, details, stamp, success) values ('conn_validated','Verified the connection to the database cluster.', toTimestamp(now()), " + 
+                                     connectionStatus + 
+                                     ") if not exists;",_keyspaceCasmaHistory);
             }
             return connectionStatus;
         }
 
-        private void CaSMaInception(IPAddress address)
+        private void CaSMaInception()
         {
-            DatabaseAddress = address;
-            RunCassieQueryScript("create keyspace if not exists casma_history with replication = {'class':'SimpleStrategy','replication_factor':1};", "");
-            RunCassieQueryScript($"create table if not exists history (step text,details text,stamp timestamp,success boolean,primary key ((success), step, details, stamp));", KeyspaceCasmaHistory);
-            
+            if (!IsApolloDatabase)
+            {
+                RunCassieQueryScript("create keyspace if not exists casma_history with replication = {'class':'SimpleStrategy','replication_factor':1};", "");
+            }
+            RunCassieQueryScript($"create table if not exists history (step text,details text,stamp timestamp,success boolean,primary key ((success), step, details, stamp));", _keyspaceCasmaHistory);
         }
         
         public Boolean RunCassieQueryScript(string command, string keyspace)
         {
             try
             {
-                var cluster = Cluster.Builder()
-                    .AddContactPoints(DatabaseAddress)
-                    .Build();
-
-                var session = string.IsNullOrWhiteSpace(keyspace) ? cluster.Connect() : cluster.Connect(keyspace);
-                var result = session.Execute(command);
+                var session = string.IsNullOrWhiteSpace(keyspace) ? DatabaseCluster.Connect() : DatabaseCluster.Connect(keyspace);
+                var statement = new SimpleStatement(command)
+                    .SetConsistencyLevel(ConsistencyLevel.Quorum)
+                    .SetRetryPolicy(DowngradingConsistencyRetryPolicy.Instance)
+                    .SetPageSize(100);
+                
+                var result = session.Execute(statement);
                 Console.WriteLine(result.ToString());
             }
             catch (NoHostAvailableException noHostError)
@@ -71,6 +84,23 @@ namespace CassieCoreLib
             }
             
             return true;
+        }
+
+        private Cluster GetCluster(IPAddress ip)
+        {
+            var cluster = Cluster.Builder()
+                .AddContactPoints(ip)
+                .Build();
+            return cluster;
+        }
+
+        private Cluster GetCluster(ApolloDb apolloDb)
+        {
+            var cluster = Cluster.Builder()
+                .WithCloudSecureConnectionBundle(apolloDb.SecurityBundleFilePath)
+                .WithCredentials(apolloDb.Username, apolloDb.Password)
+                .Build();
+            return cluster;
         }
     }
 }
