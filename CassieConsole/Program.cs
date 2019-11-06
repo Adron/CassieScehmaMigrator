@@ -1,46 +1,24 @@
 ﻿using System;
-using CommandLine;
+using McMaster.Extensions.CommandLineUtils;
 
 namespace CassieConsole
 {
-    public class Options
+    public class Program
     {
-        public enum MigrationDirection
+        public static int Main(string[] args)
+            => CommandLineApplication.Execute<Program>(args);
+
+        [Option(Description = "The subject")] public string Subject { get; }
+
+        [Option(ShortName = "n")] public int Count { get; }
+
+        private void OnExecute()
         {
-            Up,
-            Down
+            var subject = Subject ?? "world";
+            for (var i = 0; i < Count; i++)
+            {
+                Console.WriteLine($"Hello {subject}!");
+            }
         }
-        
-        [Option('m', "migrate", Required = false, HelpText = "Designate to migrate up or down.")]
-        public MigrationDirection DirectionUp { get; set; }
     }
-
-    internal class Program
-    {
-        private static void Main(string[] args)
-        {
-            Parser.Default.ParseArguments<Options>(args).WithParsed<Options>(opts => RunParsedOptions(opts));
-        }
-
-        private static void RunParsedOptions(Options opts)
-        {
-            Console.WriteLine(opts.DirectionUp);
-        }
-        
-        public static void Migrate(Options.MigrationDirection direction = Options.MigrationDirection.Up)
-        {
-            // TODO: Determine latest version (up) or version zero (down) to fully migrate up to.
-            var version = "0.0a";
-            
-            Migrate(direction, version);
-        }
-
-        public static void Migrate(Options.MigrationDirection direction, string version)
-        {
-            Console.WriteLine("Direction: " + direction);
-            Console.WriteLine("Version: " + version);
-        }
-        
-    }
-
 }

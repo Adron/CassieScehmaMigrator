@@ -65,7 +65,7 @@ namespace CassieCoreLib
                 var session = string.IsNullOrWhiteSpace(keyspace) ? DatabaseCluster.Connect() : DatabaseCluster.Connect(keyspace);
                 var statement = new SimpleStatement(command)
                     .SetConsistencyLevel(ConsistencyLevel.Quorum)
-                    .SetRetryPolicy(DowngradingConsistencyRetryPolicy.Instance)
+                    .SetRetryPolicy(new DefaultRetryPolicy())
                     .SetPageSize(100);
                 
                 var result = session.Execute(statement);
