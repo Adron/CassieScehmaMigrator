@@ -11,12 +11,3 @@ pool:
 
 steps:
   - script: ./build-release.sh
-
-#  - script: dotnet restore
-#  - script: dotnet build
-#  - script: dotnet publish ./CassieConsole/CassieConsole.csproj -c Release -r linux-x64 -o cassie-linux-x64 --self-contained true 
-#  - script: dotnet publish ./CassieConsole/CassieConsole.csproj -c Release -r linux-musl-x64 -o linux-musl-x64 --self-contained true
-#  - script: dotnet publish ./CassieConsole/CassieConsole.csproj -c Release -r win-x64 -o win-x64 --self-contained true
-#  - script: dotnet publish ./CassieConsole/CassieConsole.csproj -c Release -r rhel-x64 -o rhel-x64 --self-contained true
-#  - script: dotnet publish ./CassieConsole/CassieConsole.csproj -c Release -r osx.10.14-x64 -o cassie-osx.10.14-x64 --self-contained true
-#  - script: dotnet publish ./CassieConsole/CassieConsole.csproj -c Release -r osx.10.13-x64 -o cassie-osx.10.13-x64 --self-contained true

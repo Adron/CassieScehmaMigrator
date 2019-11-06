@@ -26,4 +26,3 @@ CASSIEPATH=release/$RID
 dotnet publish ./CassieConsole/CassieConsole.csproj -c Release -r  -o $CASSIEPATH  /p:PublishSingleFile=true
 mv ./$CASSIEPATH/CassieConsole.exe ./$CASSIEPATH/casma.exe  
 rm ./$CASSIEPATH/CassieConsole.pdb
-
